@@ -2,6 +2,7 @@ package lex
 
 import (
 	"context"
+	"fmt"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/lexruntimev2"
 	"github.com/google/uuid"
@@ -71,19 +72,17 @@ func (l *Lex) buildRecognizeTextInput(text *string) func(sessionId *string) *lex
 	localeId := "en_US"
 
 	return func(sessionId *string) *lexruntimev2.RecognizeTextInput {
-		var id *string
-		if *sessionId == "" {
-			newId := uuid.NewString()
-			id = &newId
-		} else {
-			id = sessionId
+		if len(*sessionId) == 0 {
+			*sessionId = uuid.NewString()
 		}
+
+		fmt.Printf("Using sessionId %v", *sessionId)
 
 		return &lexruntimev2.RecognizeTextInput{
 			BotAliasId:        &botAliasid,
 			BotId:             &botId,
 			LocaleId:          &localeId,
-			SessionId:         id,
+			SessionId:         sessionId,
 			Text:              text,
 		}
 	}

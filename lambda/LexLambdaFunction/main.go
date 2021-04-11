@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/Fallenstedt/lex/lambda/LexLambdaFunction/lex"
 	"github.com/aws/aws-lambda-go/lambda"
 	"log"
@@ -13,11 +12,12 @@ type LexConversationEvent struct {
 	SessionId string `json:"sessionId"`
 }
  
-type MyResponse struct {
-        Message string `json:"Answer:"`
+type LexConversationAnswer struct {
+	Message string `json:"message:"`
+	SessionId string `json:"sessionId"`
 }
 
-func HandleLambdaEvent(event LexConversationEvent) (MyResponse, error) {
+func HandleLambdaEvent(event LexConversationEvent) (LexConversationAnswer, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -28,11 +28,10 @@ func HandleLambdaEvent(event LexConversationEvent) (MyResponse, error) {
 		log.Fatalf("Failed to recognize text: %v ",answer.Err)
 	}
 
-	dump, _ := json.Marshal(answer.Output)
-	return MyResponse{
-		Message: string(dump),
+	return LexConversationAnswer{
+		Message: *answer.Output.Messages[0].Content,
+		SessionId: *answer.Output.SessionId,
 	}, nil
-
 }
 
  
