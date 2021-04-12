@@ -15,22 +15,37 @@ export class LexStack extends cdk.Stack {
 			),
 		});
 
+		const streemBotFulfillmentLambda = new lambda.Function(
+			this,
+			"LexLambdaFulifllmentFunction",
+			{
+				runtime: lambda.Runtime.GO_1_X,
+				handler: "main",
+				code: lambda.Code.fromAsset(
+					path.resolve("..", "lambda", "LexLambdaFulfillment", "main.zip")
+				),
+			}
+		);
+
 		// Permit this lambda to have all *lex V2* conversation policies
 		//
 		// https://docs.aws.amazon.com/lexv2/latest/dg/security_iam_id-based-policy-examples.html
-		streemBotLambda.addToRolePolicy(
-			new iam.PolicyStatement({
-				actions: [
-					"lex:StartConversation",
-					"lex:RecognizeText",
-					"lex:RecognizeUtterance",
-					"lex:GetSession",
-					"lex:PutSession",
-					"lex:DeleteSession",
-				],
-				effect: iam.Effect.ALLOW,
-				resources: ["*"],
-			})
-		);
+		streemBotLambda.addToRolePolicy(this.lexPolicy());
+		streemBotFulfillmentLambda.addToRolePolicy(this.lexPolicy());
+	}
+
+	private lexPolicy() {
+		return new iam.PolicyStatement({
+			actions: [
+				"lex:StartConversation",
+				"lex:RecognizeText",
+				"lex:RecognizeUtterance",
+				"lex:GetSession",
+				"lex:PutSession",
+				"lex:DeleteSession",
+			],
+			effect: iam.Effect.ALLOW,
+			resources: ["*"],
+		});
 	}
 }

@@ -41,25 +41,25 @@ func (l *Lex) RecognizeText(ctx context.Context, text *string, sessionId *string
 	go func() {
 		defer close(result)
 
-		findResultLoop:
-			for {
-				select {
-					case <- ctx.Done():
-						result <- RecognizeTextResult{
-							Output: nil,
-							Err: ctx.Err(),
-						}
-						break findResultLoop
-					default:
-						textInput := l.buildRecognizeTextInput(text)(sessionId)
-						resp, err := l.session.RecognizeText(ctx, textInput)
-						result <- RecognizeTextResult{
-							Output: resp,
-							Err: err,
-						}
-						break findResultLoop
+	findResultLoop:
+		for {
+			select {
+			case <- ctx.Done():
+				result <- RecognizeTextResult{
+					Output: nil,
+					Err: ctx.Err(),
 				}
+				break findResultLoop
+			default:
+				textInput := l.buildRecognizeTextInput(text)(sessionId)
+				resp, err := l.session.RecognizeText(ctx, textInput)
+				result <- RecognizeTextResult{
+					Output: resp,
+					Err: err,
+				}
+				break findResultLoop
 			}
+		}
 	}()
 
 	return result
