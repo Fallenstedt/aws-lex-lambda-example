@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/Fallenstedt/lex/lambda/LexLambdaFunction/lex"
+	util "github.com/Fallenstedt/lex/packages/util"
 	"github.com/aws/aws-lambda-go/lambda"
 	"log"
 )
@@ -21,7 +21,7 @@ func HandleLambdaEvent(event LexConversationEvent) (LexConversationAnswer, error
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	session := lex.NewLex(ctx)
+	session := util.NewLex(ctx)
 	answer := <- session.RecognizeText(ctx, &event.Text, &event.SessionId)
 
 	if answer.Err != nil {

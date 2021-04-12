@@ -77,7 +77,6 @@ func (l *Lex) buildRecognizeTextInput(text *string) func(sessionId *string) *lex
 		}
 
 		fmt.Printf("Using sessionId %v", *sessionId)
-
 		return &lexruntimev2.RecognizeTextInput{
 			BotAliasId:        &botAliasid,
 			BotId:             &botId,
