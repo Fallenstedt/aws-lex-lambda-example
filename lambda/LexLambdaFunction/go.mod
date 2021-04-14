@@ -6,9 +6,6 @@ replace github.com/Fallenstedt/lex/packages/util v0.0.0 => /Users/alex/Code/lex/
 require (
 	github.com/aws/aws-lambda-go v1.23.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.3.2 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.1.5
-	github.com/aws/aws-sdk-go-v2/service/lexruntimev2 v1.0.2
-	github.com/google/uuid v1.2.0
 	github.com/Fallenstedt/lex/packages/util v0.0.0
 )
 
