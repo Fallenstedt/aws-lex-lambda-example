@@ -60,6 +60,7 @@ export class LexStack extends cdk.Stack {
 	}
 
 	private addCorsOptions(apiResource: apigateway.IResource) {
+		// https://github.com/aws/aws-cdk/issues/906
 		apiResource.addMethod(
 			"OPTIONS",
 			new apigateway.MockIntegration({

@@ -1,6 +1,6 @@
 # AWS Lex + AWS Lambda Example
 
-![example](./images/1.png)
+![example](./images/login.gif)
 
 This is an AWS Lex example using an AWS Lambda with Go, and the [AWS CDK](https://cdkworkshop.com/) to manage resources.
 
